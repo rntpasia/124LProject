@@ -49,8 +49,14 @@ public class NoteFunction {
     }
     
      public void saveAsNote(){
-        fd = new FileDialog(notes.window, "SaveAs", FileDialog.SAVE);
+        fd = new FileDialog(notes.window, "Save", FileDialog.SAVE);
         fd.setVisible(true);
+        
+        if (fd.getFile() != null){
+            fileName = fd.getFile();
+            fileAddress = fd.getDirectory();
+            notes.window.setTitle(fileName);
+        }
         
         try{
             FileWriter fw = new FileWriter(fileAddress + fileName);
@@ -60,35 +66,33 @@ public class NoteFunction {
             System.out.println("Error");
         }
         
-        if (fd.getFile() != null){
-            fileName = fd.getFile();
-            fileAddress = fd.getDirectory();
-            notes.window.setTitle(fileName);
-        }
+        
     }
     
     public void openNote(){
         fd = new FileDialog(notes.window, "Open", FileDialog.LOAD);
         fd.setVisible(true);
         
+        if (fd.getFile() != null) {
+                fileName = fd.getFile();
+                fileAddress = fd.getDirectory();
+                notes.window.setTitle(fileName);
+            }
+        
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileAddress + fileName));
-            notes.textArea.setText(" ");
+            notes.textArea.setText("");
             
             String line = null;
                 while((line = br.readLine()) != null){
-                    notes.textArea.append(line + "/n" );
+                    notes.textArea.append(line + "\n" );
                 }
                     br.close();
         }catch (Exception e){
             System.out.println("File note opened");
         }
         
-            if (fd.getFile() != null) {
-                fileName = fd.getFile();
-                fileAddress = fd.getDirectory();
-                notes.window.setTitle(fileName);
-            }
+            
     }
     
    
