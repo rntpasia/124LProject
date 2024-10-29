@@ -6,8 +6,8 @@ package project;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,28 +35,25 @@ public class Notes implements ActionListener{
         JMenu File, Help;
         JMenuItem JNew, JOpen, JSave, JSaveAs;
         JPanel mainPanel, fontPanel, alignPanel, timerPanel;
-        JComboBox fontStyle, fontSize, fontColor, fontBG;
-        JButton bold, italic, underline;
+        JComboBox font, fontStyle, fontSize, fontColor, fontBG;
+        JButton left, center, right, justify;
         
         NoteFunction func = new NoteFunction(this);
-        GridBagConstraints gbc = new GridBagConstraints();
-        GridBagLayout lo = new GridBagLayout();
-    
+      
     public Notes(){
         createWindow();
         createTextArea();
         createMenu();
+        createMenuItem();
         createFormatPanel();
-        createFontStyle();
-        
-        
-        window.setVisible(true);
+        createFontPanel();
+        createAlignPanel();
+            window.setVisible(true);
     }
     
     public void createWindow(){
         window = new JFrame("Study Up");
         window.setSize(1000, 900);
-        window.setLayout(new BorderLayout());
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
@@ -71,62 +68,71 @@ public class Notes implements ActionListener{
         mainPanel = new JPanel();
         mainPanel.setBorder(new TitledBorder("Note Formatting"));
         mainPanel.setLayout(new GridLayout(1,3));
+        mainPanel.setPreferredSize(new Dimension(1000,120));
         mainPanel.setBackground(Color.getHSBColor(202, 94, 88));
-        mainPanel.setBounds(10,10,1000,600);
             window.add(mainPanel, BorderLayout.NORTH);
             
         fontPanel = new JPanel();
         fontPanel.setBorder(new TitledBorder("Font"));
-        fontPanel.setLayout(lo);
-        fontPanel.setBounds(10,10,1000,40);
-        fontPanel.setBackground(Color.lightGray);
+        fontPanel.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+        fontPanel.setBackground(Color.white);
             mainPanel.add(fontPanel);
             
         alignPanel = new JPanel();
         alignPanel.setBorder(new TitledBorder("Align"));
-        alignPanel.setBounds(10,10,1000,40);
+        alignPanel.setLayout(new GridLayout(2,2));
         alignPanel.setBackground(Color.white);
             mainPanel.add(alignPanel);
         
         timerPanel = new JPanel();
         timerPanel.setBorder(new TitledBorder("Timer"));
-        timerPanel.setBounds(10,10,1000,40);
-        timerPanel.setBackground(Color.lightGray);
+     
+        timerPanel.setBackground(Color.white);
             mainPanel.add(timerPanel);
     }
     
-    public void createFontStyle(){
+    public void createFontPanel(){
         fontStyle = new JComboBox();
         fontSize = new JComboBox();
-        bold = new JButton("B");
-        italic = new JButton("I");
-        underline = new JButton("U");
+        font = new JComboBox();
+        fontColor = new JComboBox();
+        fontBG = new JComboBox();
         
             fontStyle.addItem("Arial");
             fontStyle.addItem("Times New Roman");
             fontStyle.addItem("Calibri");
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-        fontPanel.add(fontStyle, gbc);
+        fontPanel.add(fontStyle);
+            
+            font.addItem("Bold");
+            font.addItem("Italic");
+            font.addItem("Underline");
+        fontPanel.add(font);
         
             fontSize.addItem("12");
             fontSize.addItem("18");
             fontSize.addItem("24");
-            gbc.gridx = 1;
-            gbc.gridy = 0;
-        fontPanel.add(fontSize, gbc);
-                    
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-        fontPanel.add(bold, gbc);
-       
-            gbc.gridx = 1;
-            gbc.gridy = 1;
-        fontPanel.add(italic, gbc);
+        fontPanel.add(fontSize);
         
-          gbc.gridx = 2;
-           gbc.gridy = 1;
-        fontPanel.add(underline, gbc);
+            fontColor.addItem("Black");
+            fontColor.addItem("White");
+            fontColor.addItem("Gray");
+        fontPanel.add(fontColor);
+            
+            fontBG.addItem("Blue Highlight");
+            fontBG.addItem("Green Highlight");
+            fontBG.addItem("Yellow Highlight");
+        fontPanel.add(fontBG);
+    }
+    
+    public void createAlignPanel(){
+        left = new JButton("Left");
+        right = new JButton("Right");
+        center = new JButton("Center");
+        justify = new JButton("Justify");
+            alignPanel.add(left);
+            alignPanel.add(right);
+            alignPanel.add(center);
+            alignPanel.add(justify);
     }
     
      public void createMenu(){
@@ -138,41 +144,45 @@ public class Notes implements ActionListener{
             
         Help = new JMenu ("Help");
             menu.add(Help);
-            
+    }
+    
+    public void createMenuItem(){
         JNew = new JMenuItem("New");
             JNew.addActionListener(this);
-            JNew.setActionCommand("New");
+            JNew.setActionCommand("New Note");
             File.add(JNew);
             
         JOpen = new JMenuItem("Open");
             JOpen.addActionListener(this);
-            JOpen.setActionCommand("Open");   
+            JOpen.setActionCommand("Open Note");   
             File.add(JOpen);
             
         JSave = new JMenuItem("Save");
             JSave.addActionListener(this);
-            JSave.setActionCommand("Save");
+            JSave.setActionCommand("Save Note");
             File.add(JSave);
             
         JSaveAs = new JMenuItem("Save As");
             JSaveAs.addActionListener(this);
-            JSaveAs.setActionCommand("Save As");
+            JSaveAs.setActionCommand("Note Save As");
             File.add(JSaveAs);
     }
-    
-    
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
             switch(cmd){
-                case "New": func.newNote();
+                case "New Note": 
+                    func.newNote();
                     break;
-                case "Open": func.openNote();
+                case "Open Note": 
+                    func.openNote();
                     break;
-                case "Save": func.saveNote();
+                case "Save Note": 
+                    func.saveNote();
                     break;
-                case "Save As": func.saveAsNote();
+                case "Note Save As": 
+                    func.saveAsNote();
                     break;
             }
     }
