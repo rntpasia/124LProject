@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package project;
+
 
 import java.awt.FileDialog;
 import java.io.BufferedReader;
@@ -81,15 +81,18 @@ public class NoteFunction {
         
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileAddress + fileName));
-            notes.textArea.setText("");
-            
-            String line = null;
-                while((line = br.readLine()) != null){
-                    notes.textArea.append(line + "\n" );
-                }
-                    br.close();
-        }catch (Exception e){
-            System.out.println("File note opened");
+            notes.textArea.setText(""); 
+
+            String line;
+            StringBuilder content = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n"); 
+            }
+            notes.textArea.setText(content.toString()); // Set the complete text to JTextPane
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Error opening file note: " + e.getMessage());
         }
         
             
